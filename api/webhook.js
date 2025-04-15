@@ -11,32 +11,32 @@ export default async function handler(req, res) {
     return res.status(200).json({ text: '' });
   }
 
-  // 🔍 Debug complet du message
-  console.log("🧩 Contenu de message.content :", message?.content);
+  console.log("🧩 message.content complet :", JSON.stringify(message?.content));
 
-  // 🧠 Essayons d'extraire le texte intelligemment
+  // 🧠 Extraction intelligente du texte (quelle que soit la structure)
   let text = null;
 
-  // Le texte peut être dans content.message, content.messages[0], etc.
   if (typeof message?.content === 'string') {
     text = message.content;
   } else if (message?.content?.text) {
     text = message.content.text;
-  } else if (Array.isArray(message?.content?.messages) && message.content.messages[0]?.text) {
-    text = message.content.messages[0].text;
+  } else if (Array.isArray(message?.content?.messages)) {
+    const firstMessage = message.content.messages.find(m => m?.text);
+    if (firstMessage) text = firstMessage.text;
   }
 
-  console.log("🧠 Phrase générée par l'IA :", text);
+  console.log("🧠 Phrase détectée :", text);
   const preRecordedAudios = {
     "Bonjour, pouvez-vous confirmer votre nom ?": "https://hcxlesleujrfutixrqeu.supabase.co/storage/v1/object/public/son//nom.mp3",
     "Quel est votre besoin principal aujourd'hui ?": "https://hcxlesleujrfutixrqeu.supabase.co/storage/v1/object/public/son//besoin.mp3",
     "Êtes-vous disponible pour un rendez-vous demain ?": "https://hcxlesleujrfutixrqeu.supabase.co/storage/v1/object/public/son//rdv.mp3",
   };
- let response = { text };
+ 
+  let response = { text };
 
   if (text && preRecordedAudios[text]) {
     response.audio_url = preRecordedAudios[text];
-    console.log("🔊 On remplace par l'audio :", response.audio_url);
+    console.log("🔊 Audio trouvé :", response.audio_url);
   } else {
     console.log("🗣️ Pas de correspondance, voix synthétique utilisée.");
   }
