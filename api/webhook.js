@@ -11,7 +11,8 @@ export default async function handler(req, res) {
     return res.status(200).json({ text: '' });
   }
 
-  const fragment = message?.output;
+  const rawFragment = message?.output;
+  const fragment = rawFragment?.trim().toLowerCase();
   console.log("🎯 Fragment reçu :", fragment);
 
   // Mots-clés déclencheurs -> audio
@@ -32,8 +33,8 @@ export default async function handler(req, res) {
 
   let response = {};
 
-  if (fragment && triggerMap[fragment.toLowerCase()]) {
-    const phrase = triggerMap[fragment.toLowerCase()];
+  if (fragment && triggerMap[fragment]) {
+    const phrase = triggerMap[fragment];
     response = {
       text: phrase.fullText,
       audio_url: phrase.audio_url
@@ -42,6 +43,9 @@ export default async function handler(req, res) {
   } else {
     console.log("🗣️ Fragment ignoré ou non reconnu.");
   }
+
+  return res.status(200).json(response);
+}
 
   return res.status(200).json(response);
 }
