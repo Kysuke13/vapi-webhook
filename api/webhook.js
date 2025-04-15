@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -11,11 +11,9 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ text: '' });
   }
 
-  const rawFragment = message?.output;
-  const fragment = rawFragment?.trim().toLowerCase();
+  const fragment = message?.output;
   console.log("🎯 Fragment reçu :", fragment);
   
-  // Mots-clés déclencheurs -> audio
   const triggerMap = {
     "confirmer": {
       fullText: "Bonjour, pouvez-vous confirmer votre nom ?",
@@ -33,8 +31,8 @@ module.exports = async function handler(req, res) {
 
  let response = {};
 
-  if (fragment && triggerMap[fragment]) {
-    const phrase = triggerMap[fragment];
+  if (fragment && triggerMap[fragment.toLowerCase()]) {
+    const phrase = triggerMap[fragment.toLowerCase()];
     response = {
       text: phrase.fullText,
       audio_url: phrase.audio_url
