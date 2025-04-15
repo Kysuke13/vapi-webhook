@@ -1,4 +1,8 @@
-export default async function handler(req, res) {
+// Mémoire simple pour stocker le texte par appel
+const buffers = {};
+const alreadyPlayed = {};
+
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -11,8 +15,19 @@ export default async function handler(req, res) {
     return res.status(200).json({ text: '' });
   }
 
-  const fragment = message?.output;
-  console.log("🎯 Fragment reçu :", fragment);
+  const fragment = message?.output?.trim().toLowerCase();
+  const callId = message?.call?.id;
+
+  if (!fragment || !callId) {
+    console.log("❌ Fragment ou callId manquant.");
+    return res.status(200).json({ text: '' });
+  }
+
+  // On bufferise tout par call
+  buffers[callId] = (buffers[callId] || '') + fragment;
+  const full = buffers[callId];
+
+  console.log(`📥 Buffer actuel (${callId}):`, full);
   
   const triggerMap = {
     "confirmer": {
@@ -29,18 +44,20 @@ export default async function handler(req, res) {
     }
   };
 
- let response = {};
+for (const keyword of Object.keys(triggerMap)) {
+    if (full.includes(keyword) && !alreadyPlayed[callId + keyword]) {
+      alreadyPlayed[callId + keyword] = true; // empêche de rejouer
+      const phrase = triggerMap[keyword];
 
-  if (fragment && triggerMap[fragment.toLowerCase()]) {
-    const phrase = triggerMap[fragment.toLowerCase()];
-    response = {
-      text: phrase.fullText,
-      audio_url: phrase.audio_url
-    };
-    console.log("🔊 MP3 déclenché :", phrase.audio_url);
-  } else {
-    console.log("🗣️ Fragment ignoré ou non reconnu.");
+      console.log("🔊 Détection ! Envoi du MP3 :", phrase.audio_url);
+
+      return res.status(200).json({
+        text: phrase.fullText,
+        audio_url: phrase.audio_url
+      });
+    }
   }
 
-  return res.status(200).json(response);
-}
+  // Sinon on ne dit rien
+  return res.status(200).json({ text: '' });
+};
