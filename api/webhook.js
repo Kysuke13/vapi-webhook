@@ -16,6 +16,7 @@ export default async function handler(req, res) {
   if (preRecordedAudios[text]) {
     response.audio_url = preRecordedAudios[text];
   }
+console.log("Phrase reçue de Vapi :", text);
 
   return res.status(200).json(response);
 }
