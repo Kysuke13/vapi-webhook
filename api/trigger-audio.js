@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         type: "play",
         payload: {
-          url: "https://vibe-coder.vercel.app/audio/intro.mp3"
+          url: "https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son//nom.mp3"
         }
       })
     });
