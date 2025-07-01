@@ -1,29 +1,12 @@
+// pages/api/get-audio.js
 export default async function handler(req, res) {
-  const { callId } = req.body;
+  const audioUrl = https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son//nom.mp3"; // Ton fichier audio public
 
-  if (!callId) {
-    return res.status(400).json({ error: "Missing callId" });
-  }
-
-  try {
-    const result = await fetch(`https://api.vapi.ai/call/${callId}/event`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.VAPI_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        type: "play",
-        payload: {
-          url: "https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son//nom.mp3"
-        }
-      })
-    });
-
-    const data = await result.json();
-    res.status(200).json({ success: true, response: data });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "API error" });
-  }
+  res.status(200).json({
+    type: "play",
+    payload: {
+      url: audioUrl
+    }
+  });
 }
+
