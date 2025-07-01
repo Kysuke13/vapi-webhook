@@ -40,7 +40,7 @@ module.exports = async function handler(req, res) {
     },
     "trois": {
       fullText: "Êtes-vous disponible pour un rendez-vous demain ?",
-      audio_url: "https://hcxlesleujrfutixrqeu.supabase.co/storage/v1/object/public/son//rdv.mp3"
+      audio_url: "https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son//rdv.mp3"
     }
   };
 
