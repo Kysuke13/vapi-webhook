@@ -6,11 +6,11 @@ export default async function handler(req, res) {
   let audioUrl;
 
   if (text.includes("non")) {
-    audioUrl = "https://ton-projet.vercel.app/audio/refus.mp3";
+    audioUrl = "https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son/besoin.mp3";
   } else if (text.includes("oui")) {
-    audioUrl = "https://ton-projet.vercel.app/audio/ok.mp3";
+    audioUrl = "https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son/nom.mp3";
   } else {
-    audioUrl = "https://ton-projet.vercel.app/audio/standard.mp3";
+    audioUrl = "https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son/rdv.mp3";
   }
 
   return res.status(200).json({
