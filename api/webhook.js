@@ -30,11 +30,11 @@ module.exports = async function handler(req, res) {
   console.log(`📥 Buffer actuel (${callId}):`, full);
   
   const triggerMap = {
-    "besoin": {
+    "un": {
       fullText: "Bonjour, pouvez-vous confirmer votre nom ?",
       audio_url: "https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son//nom.mp3"
     },
-    "jamais": {
+    "deux": {
       fullText: "Quel est votre besoin principal aujourd'hui ?",
       audio_url: "https://vpxeoycjmrsxbcmocwly.supabase.co/storage/v1/object/public/son//besoin.mp3"
     },
